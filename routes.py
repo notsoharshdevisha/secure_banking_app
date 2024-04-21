@@ -6,8 +6,13 @@ from services.account_service import get_balance, do_transfer
 main_bp = Blueprint('main', __name__)
 
 
-@main_bp.route("/login", methods=['GET'])
+@main_bp.route('/', methods=["GET"])
 def home():
+    return redirect('/login')
+
+
+@main_bp.route("/login", methods=['GET'])
+def login_view():
     if not logged_in():
         return render_template("login.html"), 200
     return redirect('/dashboard')
@@ -27,15 +32,11 @@ def login():
 
 @main_bp.route("/dashboard", methods=['GET'])
 def dashboard():
-    if not logged_in():
-        return render_template("login.html")
     return render_template("dashboard.html", email=g.user)
 
 
 @main_bp.route("/details", methods=['GET'])
 def details():
-    if not logged_in():
-        return render_template("login.html")
     account_number = request.args['account']
     return render_template(
         "details.html",
@@ -46,15 +47,13 @@ def details():
 
 @main_bp.route("/logout", methods=['GET'])
 def logout():
-    response = make_response(redirect("/dashboard"))
+    response = make_response(redirect("/login"))
     response.delete_cookie('auth_token')
     return response, 303
 
 
 @main_bp.route("/transfer", methods=["POST"])
 def transfer():
-    if not logged_in():
-        return render_template("login.html")
     source = request.form.get("from")
     target = request.form.get("to")
     amount = int(request.form.get("amount"))
@@ -81,6 +80,4 @@ def transfer():
 
 @main_bp.route("/transfer", methods=["GET"])
 def transfer_view():
-    if not logged_in():
-        return render_template("login.html")
     return render_template("transfer.html")
