@@ -1,5 +1,5 @@
 import sqlite3
-from passlib.hash import pbkdf2_sha256
+import bcrypt
 
 con = sqlite3.connect('bank.db')
 cur = con.cursor()
@@ -8,9 +8,9 @@ cur.execute('''
         email text primary key, name text, password text)''')
 cur.execute(
     "INSERT INTO users VALUES (?, ?, ?)",
-    ('alice@example.com', 'Alice Xu', pbkdf2_sha256.hash("123456")))
+    ('alice@example.com', 'Alice Xu', bcrypt.hashpw(b"123456", bcrypt.gensalt())))
 cur.execute(
     "INSERT INTO users VALUES (?, ?, ?)",
-    ('bob@example.com', 'Bobby Tables', pbkdf2_sha256.hash("123456")))
+    ('bob@example.com', 'Bobby Tables', bcrypt.hashpw(b"123456", bcrypt.gensalt())))
 con.commit()
 con.close()

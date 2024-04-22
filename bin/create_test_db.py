@@ -1,5 +1,5 @@
 import sqlite3
-from passlib.hash import pbkdf2_sha256
+import bcrypt
 import random
 
 
@@ -18,11 +18,12 @@ def create_users() -> None:
 
     cur.execute(
         "INSERT INTO users VALUES (?, ?, ?)",
-        ('alice@example.com', 'Alice Xu', pbkdf2_sha256.hash("123456")))
+        ('alice@example.com', 'Alice Xu', bcrypt.hashpw(bytes("123456", 'utf-8'), bcrypt.gensalt())))
 
     cur.execute(
         "INSERT INTO users VALUES (?, ?, ?)",
-        ('bob@example.com', 'Bobby Tables', pbkdf2_sha256.hash("123456")))
+        ('bob@example.com', 'Bobby Tables',
+         bcrypt.hashpw(bytes("123456", 'utf-8'), bcrypt.gensalt())))
 
     con.commit()
     con.close()
