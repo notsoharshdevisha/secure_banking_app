@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, request, g, abort, make_response
 from services.user_service import get_user_with_credentials, logged_in
 from services.account_service import get_balance, do_transfer
+from forms import LoginForm, TransferForm
 
 # Create a blueprint
 main_bp = Blueprint('main', __name__)
@@ -13,18 +14,20 @@ def home():
 
 @main_bp.route("/login", methods=['GET'])
 def login_view():
+    form = LoginForm()
     if not logged_in():
-        return render_template("login.html"), 200
+        return render_template("login.html", form=form), 200
     return redirect('/dashboard')
 
 
 @main_bp.route("/login", methods=["POST"])
-def login():
+def login_api():
     email = request.form.get("email")
     password = request.form.get("password")
     user = get_user_with_credentials(email, password)
     if not user:
-        return render_template("login.html", error="Invalid credentials")
+        form = LoginForm()
+        return render_template("login.html", form=form, invalid_cred_message="Invalid Credentials")
     response = make_response(redirect("/dashboard"))
     response.set_cookie("auth_token", user["token"])
     return response, 303
@@ -80,4 +83,5 @@ def transfer():
 
 @main_bp.route("/transfer", methods=["GET"])
 def transfer_view():
-    return render_template("transfer.html")
+    form = TransferForm()
+    return render_template("transfer.html", form=form)

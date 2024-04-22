@@ -1,9 +1,18 @@
-{% if error %}
-<p style="color: red">{{ error }}</p>
-{% endif %}
+<h1>Login</h1>
 <form method="post" action="/login">
-  <p>Email: <input type="text" name="email" /></p>
-  <p>Password: <input type="password" name="password" /></p>
-  <p><input type="submit" value="Login" /></p>
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  {{ form.csrf_token }}
+  <div>
+    {{form.email.label}}    {{ form.email }}
+  </div>
+  <div>
+    {{form.password.label}} {{ form.password }}
+  </div>
+  <div>
+    {% if invalid_cred %}
+      <p style="color: red; height: 0px;">{{ invalid_cred_message }}</p>
+    {% endif %}
+  </div>
+  <div>
+    <input id="submit" type="submit" value="Login" style="margin-top: 15px;">
+  </div>
 </form>
