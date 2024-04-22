@@ -23,3 +23,9 @@ def test_login_api(client) -> None:
     response = client.post("/login",  data=form_data)
     assert client.get_cookie('auth_token') != None
     assert response.status_code == 303
+
+
+def test_dashboard_view(client) -> None:
+    g.user = "alice@example.com"
+    response = client.get('/dashboard')
+    assert response.status_code == 200
