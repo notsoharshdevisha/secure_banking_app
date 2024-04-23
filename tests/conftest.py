@@ -7,11 +7,12 @@ from bin.destroy_test_db import destroy_test_db
 from typing import Generator
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def app() -> Generator[Flask, None, None]:
     app: Flask = create_app()
     app.config.update({
-        "TESTING": True
+        "TESTING": True,
+        "DB": 'test_bank.db'
     })
 
     create_test_db()
@@ -21,7 +22,7 @@ def app() -> Generator[Flask, None, None]:
     destroy_test_db()
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def client(app: Flask):
     with app.app_context():
         # Use the app's test client for testing

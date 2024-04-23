@@ -1,8 +1,8 @@
 import sqlite3
 from datetime import datetime, timedelta
 from pytz import timezone
-from passlib.hash import pbkdf2_sha256
-from flask import request, g
+import bcrypt
+from flask import request, g, current_app
 import jwt
 
 SECRET = 'bfg28y7efg238re7r6t32gfo23vfy7237yibdyo238do2v3'
@@ -10,7 +10,7 @@ SECRET = 'bfg28y7efg238re7r6t32gfo23vfy7237yibdyo238do2v3'
 
 def get_user_with_credentials(email, password):
     try:
-        con = sqlite3.connect('bank.db')
+        con = sqlite3.connect(current_app.config['DB'])
         cur = con.cursor()
         cur.execute('''
             SELECT email, name, password FROM users where email=?''',
@@ -19,7 +19,7 @@ def get_user_with_credentials(email, password):
         if row is None:
             return None
         email, name, hash = row
-        if not pbkdf2_sha256.verify(password, hash):
+        if not bcrypt.checkpw(bytes(password, 'utf-8'), hash):
             return None
         return {"email": email, "name": name, "token": create_token(email)}
     finally:
