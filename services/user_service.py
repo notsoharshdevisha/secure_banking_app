@@ -1,16 +1,15 @@
 import sqlite3
-from datetime import datetime, timedelta
-from pytz import timezone
 import bcrypt
 from flask import request, g, current_app
 import jwt
+from utils import get_db_name, create_token
 
 SECRET = 'bfg28y7efg238re7r6t32gfo23vfy7237yibdyo238do2v3'
 
 
 def get_user_with_credentials(email, password):
     try:
-        con = sqlite3.connect(current_app.config['DB'])
+        con = sqlite3.connect(get_db_name())
         cur = con.cursor()
         cur.execute('''
             SELECT email, name, password FROM users where email=?''',
@@ -28,16 +27,12 @@ def get_user_with_credentials(email, password):
 
 def logged_in():
     token = request.cookies.get('auth_token')
+    if not token:
+        return False
     try:
-        data = jwt.decode(token, SECRET, algorithms=['HS256'])
+        data = jwt.decode(bytes(str(token), 'utf-8'),
+                          current_app.config['SECRET_KEY'], algorithms=['HS256'])
         g.user = data['sub']
         return True
     except jwt.InvalidTokenError:
         return False
-
-
-def create_token(email):
-    now = datetime.now(timezone('US/Pacific'))
-    payload = {'sub': email, 'iat': now, 'exp': now + timedelta(minutes=60)}
-    token = jwt.encode(payload, SECRET, algorithm='HS256')
-    return token

@@ -1,10 +1,10 @@
 import sqlite3
-from flask import current_app
+from utils import get_db_name
 
 
 def get_balance(account_number, owner):
     try:
-        con = sqlite3.connect(current_app.config['DB'])
+        con = sqlite3.connect(get_db_name())
         cur = con.cursor()
         cur.execute('''
             SELECT balance FROM accounts where id=? and owner=?''',
@@ -19,7 +19,7 @@ def get_balance(account_number, owner):
 
 def do_transfer(source, target, amount):
     try:
-        con = sqlite3.connect(current_app.config['DB'])
+        con = sqlite3.connect(get_db_name())
         cur = con.cursor()
         cur.execute('''
             SELECT id FROM accounts where id=?''',
