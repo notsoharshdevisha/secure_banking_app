@@ -30,7 +30,7 @@ def login_api():
         return render_template('login.html', form=form, invalid_cred_message='Invalid Credentials')
     response = make_response(redirect('/dashboard'))
     response.set_cookie('auth_token', user['token'])
-    return response, 303
+    return response, 302
 
 
 @main_bp.route('/dashboard', methods=['GET'])
