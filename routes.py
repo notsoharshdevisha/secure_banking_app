@@ -14,8 +14,8 @@ def home():
 
 @main_bp.route('/login', methods=['GET'])
 def login_view():
-    form = LoginForm()
     if not logged_in():
+        form = LoginForm()
         return render_template('login.html', form=form), 200
     return redirect('/dashboard')
 
