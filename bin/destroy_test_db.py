@@ -1,8 +1,8 @@
 import os
 
 
-def destroy_test_db() -> None:
-    test_db_path: str = "./test_bank.db"
+def destroy_test_db():
+    test_db_path = "test_bank.db"
     if os.path.exists(test_db_path):
         os.remove(test_db_path)
 

@@ -8,6 +8,7 @@ SECRET = 'bfg28y7efg238re7r6t32gfo23vfy7237yibdyo238do2v3'
 
 
 def get_user_with_credentials(email, password):
+    con = None
     try:
         con = sqlite3.connect(get_db_name())
         cur = con.cursor()
@@ -22,7 +23,8 @@ def get_user_with_credentials(email, password):
             return None
         return {"email": email, "name": name, "token": create_token(email)}
     finally:
-        con.close()
+        if con is not None:
+            con.close()
 
 
 def logged_in():
