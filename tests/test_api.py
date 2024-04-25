@@ -30,3 +30,29 @@ def test_login_api(unauthenticated_client_with_functional_scope):
 
     unauthenticated_client_with_functional_scope.delete_cookie('auth_token')
 
+
+@pytest.mark.api_endpoint
+def test_transfer_api(app_with_functional_scope, authenticated_client_with_functional_scope):
+    route = '/transfer'
+    valid_data = {
+        'from': "1234567890",
+        'to': "3456789012",
+        'amount': "200"
+    }
+
+    invalid_data = {
+        'from': "4567890",
+        'to': "3456789012",
+        'amount': "200"
+    }
+
+    response = authenticated_client_with_functional_scope.post(route)
+    assert response.status_code == 400
+
+    response = authenticated_client_with_functional_scope.post(
+        route, data=invalid_data)
+    assert response.status_code == 400
+
+    response = authenticated_client_with_functional_scope.post(
+        route, data=valid_data)
+    assert response.status_code == 302
