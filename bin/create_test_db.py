@@ -1,15 +1,15 @@
 import sqlite3
 import bcrypt
-import random
+import os
 
 
-def create_test_db() -> None:
+def create_test_db():
     create_users()
     create_accounts()
     create_account_types()
 
 
-def create_users() -> None:
+def create_users():
     con: sqlite3.Connection = sqlite3.connect('test_bank.db')
     cur: sqlite3.Cursor = con.cursor()
     cur.execute('''
@@ -29,7 +29,7 @@ def create_users() -> None:
     con.close()
 
 
-def create_accounts() -> None:
+def create_accounts():
     con: sqlite3.Connection = sqlite3.connect('test_bank.db')
     cur: sqlite3.Cursor = con.cursor()
     cur.execute('''
@@ -42,29 +42,25 @@ def create_accounts() -> None:
 
     cur.execute(
         "INSERT INTO accounts VALUES (?, ?, ?, ?)",
-        (generate_account_number(), 'alice@example.com', 7500, "a1df8500-5b1d-472b-8748-3441f118a89f"))
+        ('1234567890', 'alice@example.com', 7500, "a1df8500-5b1d-472b-8748-3441f118a89f"))
 
     cur.execute(
         "INSERT INTO accounts VALUES (?, ?, ?, ?)",
-        (generate_account_number(), 'alice@example.com', 200, "391ed75a-31f5-45fc-a112-ac67e65a4891"))
+        ('2345678901', 'alice@example.com', 200, "391ed75a-31f5-45fc-a112-ac67e65a4891"))
 
     cur.execute(
         "INSERT INTO accounts VALUES (?, ?, ?, ?)",
-        (generate_account_number(), 'bob@example.com', 3000, "a1df8500-5b1d-472b-8748-3441f118a89f"))
+        ('3456789012', 'bob@example.com', 3000, "a1df8500-5b1d-472b-8748-3441f118a89f"))
 
     cur.execute(
         "INSERT INTO accounts VALUES (?, ?, ?, ?)",
-        (generate_account_number(), 'bob@example.com', 100, "391ed75a-31f5-45fc-a112-ac67e65a4891"))
+        ('4567890123', 'bob@example.com', 100, "391ed75a-31f5-45fc-a112-ac67e65a4891"))
 
     con.commit()
     con.close()
 
 
-def generate_account_number() -> int:
-    return random.randint(1000000000, 9999999999)
-
-
-def create_account_types() -> None:
+def create_account_types():
     con: sqlite3.Connection = sqlite3.connect("test_bank.db")
     curr: sqlite3.Cursor = con.cursor()
     curr.execute('''
