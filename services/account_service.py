@@ -2,7 +2,8 @@ import sqlite3
 from utils import get_db_name
 
 
-def get_balance(account_number, owner):
+def get_balance(account_number: str, owner: str) -> None:
+    con = None
     try:
         con = sqlite3.connect(get_db_name())
         cur = con.cursor()
@@ -14,10 +15,16 @@ def get_balance(account_number, owner):
             return None
         return row[0]
     finally:
-        con.close()
+        if con is not None:
+            con.close()
 
 
-def do_transfer(source, target, amount):
+def do_transfer(transaction):
+    source = transaction.get_source()
+    target = transaction.get_target()
+    amount = transaction.get_amount()
+
+    con = None
     try:
         con = sqlite3.connect(get_db_name())
         cur = con.cursor()
@@ -36,4 +43,5 @@ def do_transfer(source, target, amount):
         con.commit()
         return True
     finally:
-        con.close()
+        if con is not None:
+            con.close()

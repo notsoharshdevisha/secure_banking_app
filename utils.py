@@ -18,3 +18,31 @@ def create_token(email):
 
 def get_secret_from_app_config():
     return current_app.config['SECRET_KEY']
+
+
+class Transaction:
+    def __init__(self, source: str, target: str, amount: str):
+        if not source or len(source) != 10 or not source.isdigit():
+            raise Exception("Bad arguments")
+
+        if not target or len(target) != 10 or not target.isdigit():
+            raise Exception("Bad arguments")
+
+        if not amount or not amount.isdigit() or int(amount) > 1000:
+            raise Exception("Bad arguments")
+
+        if source == target:
+            raise Exception("Bad arguments")
+
+        self._source = source
+        self._target = target
+        self._amount = int(amount)
+
+    def get_source(self) -> str:
+        return self._source
+
+    def get_target(self) -> str:
+        return self._target
+
+    def get_amount(self) -> int:
+        return self._amount
