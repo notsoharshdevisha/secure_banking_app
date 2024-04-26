@@ -19,6 +19,16 @@ Install the dependencies
 pip install -r dependencies.txt
 ```
 
+the .env file should look like this
+```
+# required
+SECRET_KEY=yoursupersecrettokenhere
+DB=bank.db
+# optional
+FLASK_DEBUG=1
+FLASK_ENV=development
+```
+
 start the dev server
 ```sh
 flask run
@@ -31,14 +41,4 @@ python3 app.py
 run unit-tests
 ```sh
 pytest --verbose
-```
-
-the .env file should look like this
-```
-# required
-SECRET_KEY=yoursupersecrettokenhere
-DB=bank.db
-# optional
-FLASK_DEBUG=1
-FLASK_ENV=development
 ```
