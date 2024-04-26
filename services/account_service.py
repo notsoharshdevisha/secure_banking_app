@@ -31,8 +31,12 @@ def do_transfer(transaction):
         cur.execute('''
             SELECT id FROM accounts where id=?''',
                     (target,))
-        row = cur.fetchone()
-        if row is None:
+        target_account = cur.fetchone()
+        cur.execute('''
+            SELECT id FROM accounts where id=?''',
+                    (source,))
+        source_account = cur.fetchone()
+        if target_account is None or source_account is None:
             return False
         cur.execute('''
             UPDATE accounts SET balance=balance-? where id=?''',
