@@ -7,9 +7,14 @@ def test_login_api(unauthenticated_client_with_functional_scope):
     response = unauthenticated_client_with_functional_scope.get('/login')
     soup = BeautifulSoup(response.data, 'html.parser')
     csrf_token = soup.find('input', {'name': 'csrf_token'})['value']
-    data = {
+    good_data = {
         'email': 'alice@example.com',
         'password': '123456',
+        'csrf_token': csrf_token
+    }
+    bad_data = {
+        'email': 'lol',
+        'password': 'hehe',
         'csrf_token': csrf_token
     }
 
@@ -20,30 +25,35 @@ def test_login_api(unauthenticated_client_with_functional_scope):
     assert response.status_code == 200
     assert 'Email' in response.text
     assert 'Password' in response.text
-    assert response.request.path == "/login"
+    assert response.request.path == '/login'
 
     response = unauthenticated_client_with_functional_scope.post(
-        '/login', data=data)
+        '/login', data=bad_data)
+    assert response.status_code == 200
+    assert 'Email' in response.text
+    assert 'Password' in response.text
+    assert response.request.path == '/login'
+
+    response = unauthenticated_client_with_functional_scope.post(
+        '/login', data=good_data)
     assert unauthenticated_client_with_functional_scope.get_cookie(
         'auth_token') != None
     assert response.status_code == 302
 
-    unauthenticated_client_with_functional_scope.delete_cookie('auth_token')
-
 
 @pytest.mark.api_endpoint
-def test_transfer_api(app_with_functional_scope, authenticated_client_with_functional_scope):
+def test_transfer_api(authenticated_client_with_functional_scope):
     route = '/transfer'
     valid_data = {
-        'from': "1234567890",
-        'to': "3456789012",
-        'amount': "200"
+        'from': '1234567890',
+        'to': '3456789012',
+        'amount': '200'
     }
 
     invalid_data = {
-        'from': "4567890",
-        'to': "3456789012",
-        'amount': "200"
+        'from': '4567890',
+        'to': '3456789012',
+        'amount': '200'
     }
 
     response = authenticated_client_with_functional_scope.post(route)
