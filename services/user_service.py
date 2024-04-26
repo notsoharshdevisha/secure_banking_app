@@ -4,8 +4,6 @@ from flask import request, g, current_app
 import jwt
 from utils import get_db_name, create_token
 
-SECRET = 'bfg28y7efg238re7r6t32gfo23vfy7237yibdyo238do2v3'
-
 
 def get_user_with_credentials(email, password):
     con = None
