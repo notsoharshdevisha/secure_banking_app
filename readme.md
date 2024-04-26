@@ -6,17 +6,17 @@ recommended [python](https://www.python.org/) v3.10+ to run.
 
 create a vitrual environment for the project
 ```sh
-python3 -m venv {env_name}
+python3 -m venv env
 ```
 
 activate the virtual environment
 ```sh
-. {env_name}/bin/activate
+. env/bin/activate
 ```
 
 Install the dependencies
 ```sh
-pip install -r requirements.txt
+pip install -r dependencies.txt
 ```
 
 initialize the database using the provided scripts
