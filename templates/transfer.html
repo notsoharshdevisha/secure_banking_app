@@ -2,11 +2,11 @@
 
 <form method="POST" action="/transfer">
   <pre>
-  {{ form.csrf_token }}
-  From   {{ form.from_field.label }}  {{ form.from_field }}
-  To     {{ form.to_field.label }}  {{ form.to_field }}
-  Amount {{ form.amount.label }}  {{ form.amount }}
-         <input type="submit" value="Transfer">
+    {{ form.csrf_token }}
+    {{ form.source.label }}  {{ form.source }}
+    {{ form.target.label }}  {{ form.target }}
+    {{ form.amount.label }}  {{ form.amount }}
+    <input type="submit" value="Transfer">
   </pre>
 </form>
 <p><a href="/dashboard">Back to Dashboard</a></p>

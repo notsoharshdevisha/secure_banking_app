@@ -9,7 +9,7 @@ class LoginForm(FlaskForm):
 
 
 class TransferForm(FlaskForm):
-    from_field = StringField("From", validators=[DataRequired()])
-    to_field = StringField("To", validators=[DataRequired()])
+    source = StringField("From", validators=[DataRequired()])
+    target = StringField("To", validators=[DataRequired()])
     amount = IntegerField("Amount", validators=[
                           DataRequired(), NumberRange(min=1, max=1000)])

@@ -66,10 +66,10 @@ def transfer():
 
     # abort if not data found with request
     if not form:
-        return abort(400, "bad request")
+        return abort(400, "bad request: data not found")
 
-    source = form.get('from')
-    target = form.get('to')
+    source = form.get('source')
+    target = form.get('target')
     amount = form.get('amount')
 
     transaction = None
@@ -77,7 +77,7 @@ def transfer():
     try:
         transaction = Transaction(source, target, amount)
     except Exception:
-        return abort(400, "bad request")
+        return abort(400, "bad request: invalid data")
 
     available_balance = get_balance(transaction.get_source(), g.user)
 

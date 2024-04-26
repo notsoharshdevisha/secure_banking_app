@@ -45,14 +45,14 @@ def test_login_api(unauthenticated_client_with_functional_scope):
 def test_transfer_api(authenticated_client_with_functional_scope):
     route = '/transfer'
     valid_data = {
-        'from': '1234567890',
-        'to': '3456789012',
+        'source': '1234567890',
+        'target': '3456789012',
         'amount': '200'
     }
 
     invalid_data = {
-        'from': '4567890',
-        'to': '3456789012',
+        'source': '4567890',
+        'target': '3456789012',
         'amount': '200'
     }
 
