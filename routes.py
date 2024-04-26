@@ -53,7 +53,7 @@ def details():
 def logout():
     response = make_response(redirect('/login'))
     response.delete_cookie('auth_token')
-    return response, 303
+    return response, 302
 
 
 @main_bp.route('/transfer', methods=['POST'])
