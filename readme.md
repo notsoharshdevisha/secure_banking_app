@@ -16,17 +16,12 @@ activate the virtual environment
 
 Install the dependencies
 ```sh
-pip install -r dependencies.txt
+pip install -r requirements.txt
 ```
 
-the .env file should look like this
-```
-# required
-SECRET_KEY=yoursupersecrettokenhere
-DB=bank.db
-# optional
-FLASK_DEBUG=1
-FLASK_ENV=development
+initialize the database using the provided scripts
+```sh
+python3 bin/create_db.py
 ```
 
 start the dev server
@@ -41,4 +36,14 @@ python3 app.py
 run unit-tests
 ```sh
 pytest --verbose
+```
+
+the .env file should look like this
+```
+# required
+SECRET_KEY=yoursupersecrettokenhere
+DB=bank.db
+# optional
+FLASK_DEBUG=1
+FLASK_ENV=development
 ```
