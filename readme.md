@@ -27,3 +27,8 @@ OR
 ```sh
 python3 app.py
 ```
+
+run unit-tests
+```sh
+pytest --verbose
+```
