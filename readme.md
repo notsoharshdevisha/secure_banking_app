@@ -16,7 +16,7 @@ activate the virtual environment
 
 Install the dependencies
 ```sh
-pip install -r requirements.txt
+pip install -r dependencies.txt
 ```
 
 start the dev server
