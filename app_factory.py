@@ -12,7 +12,7 @@ def create_app():
     Limiter(
         get_remote_address,
         app=app,
-        default_limits=["200 per day", "50 per hour"],
+        default_limits=["200 per hour", "2 per second"],
         storage_uri="memory://",
     )
 
