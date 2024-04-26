@@ -7,10 +7,13 @@ def get_balance(account_number: str, owner: str) -> None:
     try:
         con = sqlite3.connect(get_db_name())
         cur = con.cursor()
+        # using execute provided my squlite3 lib to prevent SQL injection attacks
         cur.execute('''
             SELECT balance FROM accounts where id=? and owner=?''',
                     (account_number, owner))
         row = cur.fetchone()
+
+        # if account not found return None
         if row is None:
             return None
         return row[0]
@@ -28,6 +31,7 @@ def do_transfer(transaction):
     try:
         con = sqlite3.connect(get_db_name())
         cur = con.cursor()
+        # using execute provided my squlite3 lib to prevent SQL injection attacks
         cur.execute('''
             SELECT id FROM accounts where id=?''',
                     (target,))
@@ -36,6 +40,7 @@ def do_transfer(transaction):
             SELECT id FROM accounts where id=?''',
                     (source,))
         source_account = cur.fetchone()
+        # if target or source account not found return False
         if target_account is None or source_account is None:
             return False
         cur.execute('''

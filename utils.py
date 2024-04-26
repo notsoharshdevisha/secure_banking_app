@@ -22,15 +22,19 @@ def get_secret_from_app_config():
 
 class Transaction:
     def __init__(self, source: str, target: str, amount: str):
+        # checking if is valid account number
         if not source or len(source) != 10 or not source.isdigit():
             raise Exception("Bad arguments")
 
+        # checking if is valid account number
         if not target or len(target) != 10 or not target.isdigit():
             raise Exception("Bad arguments")
 
+        # validating amount to be transferred
         if not amount or not amount.isdigit() or int(amount) > 1000:
             raise Exception("Bad arguments")
 
+        # cannot transfer to self
         if source == target:
             raise Exception("Bad arguments")
 

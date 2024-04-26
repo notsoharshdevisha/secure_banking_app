@@ -17,6 +17,7 @@ def home():
 def login_view():
     if not logged_in():
         form = LoginForm()
+        # using render_template to prevent XSS attacks
         return render_template('login.html', form=form), 200
     return redirect('/dashboard')
 
@@ -28,6 +29,7 @@ def login_api():
     user = get_user_with_credentials(email, password)
     if not user:
         form = LoginForm()
+        # using render_template to prevent XSS attacks
         return render_template('login.html', form=form, invalid_cred_message='Invalid Credentials')
     response = make_response(redirect('/dashboard'))
     response.set_cookie('auth_token', user['token'])
@@ -36,12 +38,14 @@ def login_api():
 
 @main_bp.route('/dashboard', methods=['GET'])
 def dashboard():
+    # using render_template to prevent XSS attacks
     return render_template('dashboard.html', email=g.user)
 
 
 @main_bp.route('/details', methods=['GET'])
 def details():
     account_number = request.args['account']
+    # using render_template to prevent XSS attacks
     return render_template(
         'details.html',
         user=g.user,
@@ -59,6 +63,8 @@ def logout():
 @main_bp.route('/transfer', methods=['POST'])
 def transfer():
     form = request.form
+
+    # abort if not data found with request
     if not form:
         return abort(400, "bad request")
 
@@ -67,15 +73,19 @@ def transfer():
     amount = form.get('amount')
 
     transaction = None
+    # validate and init transaction
     try:
         transaction = Transaction(source, target, amount)
     except Exception:
         return abort(400, "bad request")
 
     available_balance = get_balance(transaction.get_source(), g.user)
+
+    # bad request if source account does not exists
     if available_balance is None:
         abort(400, 'Account not found')
 
+    # transfer amount cannot be more than available balance
     if transaction.get_amount() > int(available_balance):
         abort(400, 'You don\'t have that much')
 
@@ -88,4 +98,5 @@ def transfer():
 @main_bp.route('/transfer', methods=['GET'])
 def transfer_view():
     form = TransferForm()
+    # using render_template to prevent XSS attacks
     return render_template('transfer.html', form=form)

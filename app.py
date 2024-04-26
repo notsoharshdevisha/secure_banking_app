@@ -6,6 +6,7 @@ from flask_limiter.util import get_remote_address
 
 app = create_app()
 
+# rate-limiter to prevent brute force and DoS attacks
 Limiter(
     get_remote_address,
     app=app,
