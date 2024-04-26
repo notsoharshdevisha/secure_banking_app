@@ -24,6 +24,16 @@ initialize the database using the provided scripts
 python3 bin/create_db.py
 ```
 
+the .env file should look like this
+```
+# required
+SECRET_KEY=yoursupersecrettokenhere
+DB=bank.db
+# optional
+FLASK_DEBUG=1
+FLASK_ENV=development
+```
+
 start the dev server
 ```sh
 flask run
@@ -38,12 +48,3 @@ run unit-tests
 pytest --verbose
 ```
 
-the .env file should look like this
-```
-# required
-SECRET_KEY=yoursupersecrettokenhere
-DB=bank.db
-# optional
-FLASK_DEBUG=1
-FLASK_ENV=development
-```
