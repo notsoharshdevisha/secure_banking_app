@@ -5,6 +5,7 @@ from bin.destroy_test_db import destroy_test_db
 from utils import create_token
 from services.user_service import logged_in
 from flask import redirect, request
+from middlewares import check_auth
 
 
 @pytest.fixture(scope='session')
@@ -63,9 +64,6 @@ def create_test_app():
         'DB': 'test_bank.db'
     })
 
-    @app.before_request
-    def check_auth():
-        if request.path != "/login" and not logged_in():
-            return redirect("/login")
+    check_auth(app)
 
     return app
