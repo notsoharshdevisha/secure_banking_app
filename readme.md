@@ -32,3 +32,13 @@ run unit-tests
 ```sh
 pytest --verbose
 ```
+
+the .env file should look like this
+```
+# required
+SECRET_KEY=yoursupersecrettokenhere
+DB=bank.db
+# optional
+FLASK_DEBUG=1
+FLASK_ENV=development
+```
